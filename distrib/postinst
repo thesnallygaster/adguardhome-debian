@@ -1,0 +1,10 @@
+# Add adguardhome user
+adduser --quiet --system --home /var/lib/adguardhome --no-create-home \
+	--group --gecos "AdGuardHome user" adguardhome
+
+mkdir -p /var/lib/adguardhome
+
+chown adguardhome:adguardhome /var/lib/adguardhome
+chown adguardhome:adm /etc/adguardhome
+
+chmod 700 /var/lib/adguardhome

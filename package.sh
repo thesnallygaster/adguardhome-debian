@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ADGUARDHOME_VERSION="0.107.56"
+ADGUARDHOME_VERSION="0.107.57"
 DEB_REVISION="1"
 ARCHITECTURE="$(dpkg --print-architecture)"
 

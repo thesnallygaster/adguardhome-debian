@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ADGUARDHOME_VERSION="0.107.64"
-DEB_REVISION="1"
+DEB_REVISION="3"
 ARCHITECTURE="$(dpkg --print-architecture)"
 
 cat << EOF > /etc/apt/sources.list.d/debian.sources

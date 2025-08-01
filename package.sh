@@ -47,4 +47,4 @@ apt install -y --no-install-recommends \
 	openssh-client
 gem install fpm
 cd destdir
-fpm -a native -s dir -t deb -p ../adguardhome_"${ADGUARDHOME_VERSION}"-"${DEB_REVISION}"_"${ARCHITECTURE}".deb --name adguardhome --version "${ADGUARDHOME_VERSION}" --iteration "${DEB_REVISION}" --deb-compression zst --after-install /distrib/postinst --after-remove /distrib/postrm --deb-systemd /distrib/adguardhome.service --deb-systemd-auto-start --deb-systemd-enable --description "Description=AdGuard Home: Network-level blocker" --url "https://github.com/AdguardTeam/AdGuardHome" --maintainer "Damian Duży <dame@zakonfeniksa.org>" .
+fpm -a native -s dir -t deb -p ../adguardhome_"${ADGUARDHOME_VERSION}"-"${DEB_REVISION}"\~"${SUITE}"_"${ARCHITECTURE}".deb --name adguardhome --version "${ADGUARDHOME_VERSION}" --iteration "${DEB_REVISION}" --deb-compression zst --after-install /distrib/postinst --after-remove /distrib/postrm --deb-systemd /distrib/adguardhome.service --deb-systemd-auto-start --deb-systemd-enable --description "Description=AdGuard Home: Network-level blocker" --url "https://github.com/AdguardTeam/AdGuardHome" --maintainer "Damian Duży <dame@zakonfeniksa.org>" .

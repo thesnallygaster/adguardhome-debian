@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         platform: [amd64, arm64]
+        suite: [bookworm]
 
     steps:
       - name: Checkout repository
@@ -24,10 +25,10 @@ jobs:
         if: matrix.arch == 'arm64'
         uses: docker/setup-qemu-action@v3
 
-      - name: Create Debian Bookworm container
+      - name: Create Debian container
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          docker run --name build-container --platform linux/${{ matrix.platform }} -d -v $PWD/package.sh:/package.sh -v $PWD/distrib:/distrib -w / debian:bookworm-slim sleep infinity
+          docker run --name build-container --platform linux/${{ matrix.platform }} -d -e SUITE=${{ matrix.suite }} -v $PWD/package.sh:/package.sh -v $PWD/distrib:/distrib -w / debian:${{ matrix.suite }}-slim sleep infinity
 
       - name: Run build script
         run: |
@@ -35,7 +36,7 @@ jobs:
 
       - name: Retrieve built .deb package
         run: |
-          PACKAGE_NAME="adguardhome_${{ env.VERSION }}_${{ matrix.platform }}.deb"
+          PACKAGE_NAME="adguardhome_${{ env.VERSION }}~${{ matrix.suite }}_${{ matrix.platform }}.deb"
           docker cp build-container:/build/$PACKAGE_NAME ./
 
       - name: Upload build artifact

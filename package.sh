@@ -7,13 +7,13 @@ ARCHITECTURE="$(dpkg --print-architecture)"
 cat << EOF > /etc/apt/sources.list.d/debian.sources
 Types: deb
 URIs: http://ftp.pl.debian.org/debian
-Suites: bookworm bookworm-updates
+Suites: ${SUITE} ${SUITE}-updates
 Components: main
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
 Types: deb
 URIs: http://security.debian.org/debian-security
-Suites: bookworm-security
+Suites: ${SUITE}-security
 Components: main
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF

@@ -4,6 +4,7 @@ ADGUARDHOME_VERSION="0.107.64"
 DEB_REVISION="3"
 ARCHITECTURE="$(dpkg --print-architecture)"
 
+if [ "${OS}" == "debian" ]; then
 cat << EOF > /etc/apt/sources.list.d/debian.sources
 Types: deb
 URIs: http://ftp.pl.debian.org/debian
@@ -17,6 +18,15 @@ Suites: ${SUITE}-security
 Components: main
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
+elif [ "${OS}" == "ubuntu" ]; then
+cat << EOF > /etc/apt/sources.list.d/ubuntu.sources
+Types: deb
+URIs: http://archive.ubuntu.com/ubuntu
+Suites: ${SUITE} ${SUITE}-updates ${SUITE}-security
+Components: main
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+EOF
+fi
 
 if [ -n "${APT_PROXY_URL}" ]; then
 	echo "Acquire::http { Proxy \"${APT_PROXY_URL}\"; }" > /etc/apt/apt.conf.d/01proxy

@@ -1,4 +1,4 @@
-name: Build and Release Debian Package
+name: Build and Release Deb Package
 
 on:
   push:
@@ -11,8 +11,19 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        platform: [amd64, arm64]
-        suite: [bookworm]
+        include:
+          - platform: amd64
+            distro: debian
+            suite: bookworm
+          - platform: arm64
+            distro: debian
+            suite: bookworm
+          - platform: amd64
+            distro: ubuntu
+            suite: noble
+          - platform: arm64
+            distro: ubuntu
+            suite: noble
 
     steps:
       - name: Checkout repository
@@ -25,10 +36,10 @@ jobs:
         if: matrix.arch == 'arm64'
         uses: docker/setup-qemu-action@v3
 
-      - name: Create Debian container
+      - name: Create container
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          docker run --name build-container --platform linux/${{ matrix.platform }} -d -e SUITE=${{ matrix.suite }} -v $PWD/package.sh:/package.sh -v $PWD/distrib:/distrib -w / debian:${{ matrix.suite }}-slim sleep infinity
+          docker run --name build-container --platform linux/${{ matrix.platform }} -d -e DISTRO=${{ matrix.distro }} -e SUITE=${{ matrix.suite }} -v $PWD/package.sh:/package.sh -v $PWD/distrib:/distrib -w / ${{ matrix.distro }}:${{ matrix.suite }} sleep infinity
 
       - name: Run build script
         run: |
@@ -42,7 +53,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: debian-package-${{ matrix.platform }}
+          name: deb-package-${{ matrix.platform }}
           path: ./*.deb
 
   release:

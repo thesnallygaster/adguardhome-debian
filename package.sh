@@ -22,8 +22,14 @@ elif [ "${DISTRO}" == "ubuntu" ]; then
 cat << EOF > /etc/apt/sources.list.d/ubuntu.sources
 Types: deb
 URIs: http://archive.ubuntu.com/ubuntu
-Suites: ${SUITE} ${SUITE}-updates ${SUITE}-security
+Suites: ${SUITE} ${SUITE}-updates
 Components: main universe
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb
+URIs: http://archive.ubuntu.com/ubuntu
+Suites: ${SUITE}-security
+Components: main
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 EOF
 fi

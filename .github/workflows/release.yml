@@ -39,7 +39,7 @@ jobs:
       - name: Create container
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          docker run --name build-container --platform linux/${{ matrix.platform }} -d -e DISTRO=${{ matrix.distro }} -e SUITE=${{ matrix.suite }} -v $PWD/package.sh:/package.sh -v $PWD/distrib:/distrib -w / ${{ matrix.distro }}:${{ matrix.suite }} sleep infinity
+          docker run --name build-container --platform linux/${{ matrix.platform }} -d -e PLATFORM=${{ matrix.platform }} -e DISTRO=${{ matrix.distro }} -e SUITE=${{ matrix.suite }} -v $PWD/package.sh:/package.sh -v $PWD/distrib:/distrib -w / ${{ matrix.distro }}:${{ matrix.suite }} sleep infinity
 
       - name: Run build script
         run: |

@@ -4,7 +4,7 @@ ADGUARDHOME_VERSION="0.107.64"
 DEB_REVISION="3"
 ARCHITECTURE="$(dpkg --print-architecture)"
 
-if [ "${OS}" == "debian" ]; then
+if [ "${DISTRO}" == "debian" ]; then
 cat << EOF > /etc/apt/sources.list.d/debian.sources
 Types: deb
 URIs: http://ftp.pl.debian.org/debian
@@ -18,7 +18,7 @@ Suites: ${SUITE}-security
 Components: main
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
-elif [ "${OS}" == "ubuntu" ]; then
+elif [ "${DISTRO}" == "ubuntu" ]; then
 cat << EOF > /etc/apt/sources.list.d/ubuntu.sources
 Types: deb
 URIs: http://archive.ubuntu.com/ubuntu

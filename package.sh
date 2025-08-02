@@ -23,7 +23,7 @@ cat << EOF > /etc/apt/sources.list.d/ubuntu.sources
 Types: deb
 URIs: http://archive.ubuntu.com/ubuntu
 Suites: ${SUITE} ${SUITE}-updates ${SUITE}-security
-Components: main
+Components: main universe
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 EOF
 fi

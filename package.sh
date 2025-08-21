@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ADGUARDHOME_VERSION="0.107.64"
-DEB_REVISION="4"
+ADGUARDHOME_VERSION="0.107.65"
+DEB_REVISION="1"
 ARCHITECTURE="$(dpkg --print-architecture)"
 
 if [ "${DISTRO}" == "debian" ]; then

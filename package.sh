@@ -1,8 +1,12 @@
 #!/bin/bash
 
 ADGUARDHOME_VERSION="0.107.65"
-DEB_REVISION="1"
+DEB_REVISION="2"
 ARCHITECTURE="$(dpkg --print-architecture)"
+
+GO_VERSION="1.24.6"
+NODE_VERSION="20.19.4"
+NPM_VERSION="10.9.3"
 
 if [ "${DISTRO}" == "debian" ]; then
 cat << EOF > /etc/apt/sources.list.d/debian.sources
@@ -32,7 +36,7 @@ Suites: ${SUITE}-security
 Components: main
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 EOF
-elif [ "${DISTRO}" == "ubuntu" ] && [ "${PLATFORM}" == "arm" ]; then
+elif [ "${DISTRO}" == "ubuntu" ] && [[ "${PLATFORM}" == *"arm"* ]]; then
 cat << EOF > /etc/apt/sources.list.d/ubuntu.sources
 Types: deb
 URIs: http://ports.ubuntu.com/ubuntu
@@ -57,16 +61,40 @@ apt upgrade -y
 apt install -y --no-install-recommends \
 	ca-certificates \
 	curl \
+	xz-utils \
 	zstd \
+	make \
+	git \
 	tree
+
+mkdir -p /work
+cd /work
+curl -LO https://go.dev/dl/go"${GO_VERSION}".linux-"${PLATFORM}".tar.gz
+tar -C /usr/local -xzf go"${GO_VERSION}".linux-"${PLATFORM}".tar.gz
+export PATH="/usr/local/go/bin:${PATH}"
+
+mkdir -p /work
+cd /work
+if [ "${PLATFORM}" == "amd64" ]; then
+    NODE_PLATFORM="x64"
+else
+    NODE_PLATFORM="${PLATFORM}"
+fi
+curl -LO https://nodejs.org/dist/v"${NODE_VERSION}"/node-v"${NODE_VERSION}"-linux-"${NODE_PLATFORM}".tar.xz
+tar -C /usr/local -xf node-v"${NODE_VERSION}"-linux-"${NODE_PLATFORM}".tar.xz
+export PATH="/usr/local/node-v${NODE_VERSION}-linux-${NODE_PLATFORM}/bin:${PATH}"
+
+npm install -g npm@"${NPM_VERSION}"
 
 mkdir -p /build
 cd /build
-curl -LO https://github.com/AdguardTeam/AdGuardHome/releases/download/v${ADGUARDHOME_VERSION}/AdGuardHome_linux_${ARCHITECTURE}.tar.gz
-tar xvf AdGuardHome_linux_${ARCHITECTURE}.tar.gz
+git clone https://github.com/AdguardTeam/AdGuardHome
+cd AdGuardHome
+git reset --hard v"${ADGUARDHOME_VERSION}"
+make CHANNEL='release' VERSION="v${ADGUARDHOME_VERSION}"
 mkdir -p /build/destdir/usr/bin \
 	/build/destdir/etc/adguardhome
-install -Dm 755 AdGuardHome/AdGuardHome /build/destdir/usr/bin/adguardhome
+install -Dm 755 AdGuardHome /build/destdir/usr/bin/adguardhome
 install -Dm 644 /distrib/config.yaml /build/destdir/etc/adguardhome/config.yaml
 tree /build/destdir
 

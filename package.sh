@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ADGUARDHOME_VERSION="0.107.65"
-DEB_REVISION="2"
+DEB_REVISION="3"
 ARCHITECTURE="$(dpkg --print-architecture)"
 
 GO_VERSION="1.24.6"
@@ -39,13 +39,13 @@ EOF
 elif [ "${DISTRO}" == "ubuntu" ] && [[ "${PLATFORM}" == *"arm"* ]]; then
 cat << EOF > /etc/apt/sources.list.d/ubuntu.sources
 Types: deb
-URIs: http://ports.ubuntu.com/ubuntu
+URIs: http://ports.ubuntu.com/ubuntu-ports
 Suites: ${SUITE} ${SUITE}-updates
 Components: main universe
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 Types: deb
-URIs: http://ports.ubuntu.com/ubuntu
+URIs: http://ports.ubuntu.com/ubuntu-ports
 Suites: ${SUITE}-security
 Components: main
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg

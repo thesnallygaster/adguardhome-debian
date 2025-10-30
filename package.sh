@@ -6,7 +6,7 @@ ARCHITECTURE="$(dpkg --print-architecture)"
 
 GO_VERSION="1.25.3"
 NODE_VERSION="24.11.0"
-NPM_VERSION="10.9.4"
+NPM_VERSION="11.6.2"
 
 if [ "${DISTRO}" == "debian" ]; then
 cat << EOF > /etc/apt/sources.list.d/debian.sources
